@@ -1,0 +1,29 @@
+%%CLEAN
+
+clc
+close all
+clear all
+
+%% IMPORT PARAMETERS
+parameters();
+    
+
+%% DATA ACQUISITION
+
+Pitch_MotorOFF();
+%Pitch_Motor0();
+%Pitch_Motor0_Negative();
+%Pitch_Yaw();
+
+
+
+%% OVERALL RESULTS 
+
+%close all;
+%clc
+
+%k_yaw;
+k_pitch
+K_aero_ext
+
+
