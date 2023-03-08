@@ -11,7 +11,6 @@ V0_m0 = mutual0.data(4,start_m0:finish_m0);
 k_aero = 0.088;
 
 
-
 %% Effect of M0 on the yaw movement
 
     %% FITTING

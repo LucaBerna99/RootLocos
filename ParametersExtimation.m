@@ -24,11 +24,18 @@ mutualEffect();
 
 %% OVERALL RESULTS 
 
+%friction coefficient
+    k_pitch
+    k_yaw
 
-k_pitch
-k_yaw
-K_aero_ext
-m_M0_yaw
-m_M1_pitch
+%mutual effect coefficients
+    m_M0_yaw
+    m_M1_pitch
+
+%aerodynamic coefficients
+    K_aero_0_positive
+    K_aero_1_positive
+    K_aero_0_negative
+    K_aero_1_negative
 
 
