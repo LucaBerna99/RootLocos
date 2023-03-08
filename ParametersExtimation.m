@@ -40,7 +40,7 @@ mutualEffect();
     m_M0_yaw
     m_M1_pitch
 
-%aerodynamic coefficients
+% aerodynamic coefficients
     k_aero0pos = mean(K_aero_0_positive)
     k_aero1pos = mean(K_aero_1_positive)
     k_aero0neg = mean(K_aero_0_negative)
