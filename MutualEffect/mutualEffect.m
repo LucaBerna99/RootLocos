@@ -5,7 +5,7 @@ mutual0 = load('M0steps_MutualYaw.mat');
 start_m0 = 120/0.002;
 finish_m0 = 270/0.002;
 t_m0 = mutual0.data(1,start_m0:finish_m0);
-yaw_m0 = mutual0.data(3,start_m0:finish_m0)*Yaw_encoder_res;
+yaw_m0 = mutual0.data(3,start_m0:finish_m0)*Yaw_encoder_res*pi/180;
 V0_m0 = mutual0.data(4,start_m0:finish_m0);
 
 k_aero = 0.088;
@@ -75,7 +75,7 @@ mutual1 = load('M1steps_Mutual.mat');
 start_m1 = 1; %120/0.002;
 finish_m1 = 90/0.002;
 t_m1 = mutual1.data(1,start_m1:finish_m1);
-pitch_m1 = mutual1.data(3,start_m1:finish_m1)*Pitch_encoder_res;
+pitch_m1 = mutual1.data(3,start_m1:finish_m1)*Pitch_encoder_res*pi/180;
 V1_m1 = mutual1.data(2,start_m1:finish_m1);
 
 set(figure, "WindowStyle", "docked");

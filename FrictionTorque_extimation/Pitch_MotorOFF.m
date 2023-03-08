@@ -17,8 +17,6 @@
     x0_dyn = [ydata(1),1,1,1,1];
     x_dyn = lsqcurvefit(fit_dyn, x0_dyn, t, ydata);
 
-    %x_dyn = [-60.97, 1.474, 0.02941, 1.733, -0.441];
-
     %% PERIOD
     
     period = 3.712;
@@ -63,7 +61,7 @@
     jj =0;
     for j=1:1:length(t)
         
-        Cr(j) =  + Mb*g*abs(Dm)*sin(theta(j)*pi/180) + (Jp + Mb*Dm^2)*theta_dd(j);
+        Cr(j) =  + Mb*g*abs(Dm)*sind(theta(j)) + (Jp + Mb*Dm^2)*theta_dd(j);
         k_dyn(j) = Cr(j) / sign(theta_d(j));
                 
     end

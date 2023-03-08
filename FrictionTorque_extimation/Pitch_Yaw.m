@@ -30,7 +30,7 @@ hold off;
 %% Rotational Velocity
 
 t = pitch_yaw.data(1,43000:end)-86.0;
-yawdata = pitch_yaw.data(2,43000:end)*Yaw_encoder_res;
+yawdata = pitch_yaw.data(2,43000:end)*Yaw_encoder_res*pi/180;
 Vmotor1 = pitch_yaw.data(4,43000:end);
 
 yaw_fit = @(yaw,t) yaw(1).*t.^4+yaw(2).*t.^3+yaw(3).*t.^2+yaw(4).*t+yaw(5);
@@ -68,11 +68,11 @@ for i = 1:length(n_giri)
 end
 
 
-K_aero_extimation();
-k = 0.085;
+k_aero_1_positive();
+k_1_pos = mean(K_aero_1_positive);
 for i = 1:1:length(theta_yaw)
     
-    F1(i) = k * Vmotor1(i)^2;
+    F1(i) = k_1_pos * Vmotor1(i)^2;
     k_yaw(i) = (F1(i)*Dt - Jy*theta_dd_yaw(i))/theta_d_yaw(i);
 
 end

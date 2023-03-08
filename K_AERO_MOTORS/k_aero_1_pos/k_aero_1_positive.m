@@ -7,6 +7,15 @@ K_FORCE = (Mb*g)/Dt;
 
 %% theta vector inizialization from extracted data
 
+load("th4.mat");
+load("th6.mat");
+load("th8.mat");
+load("th10.mat");
+load("th12.mat");
+load("th14.mat");
+load("th16.mat");
+load("th18.mat");
+
 theta(1) = mean(theta_4(:,2))*Pitch_encoder_res*pi/180;
 theta(2) = mean(theta_6(:,2))*Pitch_encoder_res*pi/180;
 theta(3) = mean(theta_8(:,2))*Pitch_encoder_res*pi/180;
