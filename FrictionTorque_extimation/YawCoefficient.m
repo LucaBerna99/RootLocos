@@ -1,43 +1,20 @@
 
 pitch_yaw = load("Pitch_Yaw_18-28-30.mat");
 
-%% 
-
-%{
-set(figure, "WindowStyle", "docked");
-grid;
-subplot(2,2,1)
-hold on;
-plot(pitch_yaw.data(3,:));      %pitch
-plot(pitch_yaw.data(3,:)*Pitch_encoder_res);
-hold off;
-subplot(2,2,2)
-hold on;
-plot(pitch_yaw.data(2,:));      %yaw
-plot(pitch_yaw.data(2,:)*Yaw_encoder_res);
-hold off;
-subplot(2,2,3)
-hold on;
-plot(pitch_yaw.data(4,:));      %tensione motore0
-hold off;
-subplot(2,2,4)
-hold on;
-plot(pitch_yaw.data(5,:));      %tensione motore1
-hold off;
-%}
-
-
-%% Rotational Velocity
+%% ACQUISITION
 
 t = pitch_yaw.data(1,43000:end)-86.0;
 yawdata = pitch_yaw.data(2,43000:end)*Yaw_encoder_res*pi/180;
 Vmotor1 = pitch_yaw.data(4,43000:end);
 
-yaw_fit = @(yaw,t) yaw(1).*t.^4+yaw(2).*t.^3+yaw(3).*t.^2+yaw(4).*t+yaw(5);
-yaw0 = [1,1,1,1,1];
-yaw = lsqcurvefit(yaw_fit, yaw0, t, yawdata);
+%% FITTING
 
-theta_yaw = yaw_fit(yaw, t);
+yaw_fit = @(yaw_par,t) yaw_par(1).*t.^6 + yaw_par(2).*t.^5 + yaw_par(3).*t.^4 + yaw_par(4).*t.^3+ yaw_par(5).*t.^2 + yaw_par(6).*t + yaw_par(7);
+yaw0 = [0,0,0,0,0,0,0];
+yaw_par = lsqcurvefit(yaw_fit, yaw0, t, yawdata);
+
+%% DERIVATIVES
+theta_yaw = yaw_fit(yaw_par, t);
 theta_d_yaw = diff(theta_yaw) / 0.002;
 theta_dd_yaw = diff(theta_d_yaw) / 0.002;
 
@@ -50,19 +27,21 @@ t(length(t)) = [];
 t(length(t)-1) = [];
 
 
+%% PLOTs
+
 set(figure, "WindowStyle", "docked");
 grid;
 hold on;
-plot(t, yawdata,'b','LineWidth',1.5);
-plot(t, theta_yaw, 'r');
-plot(t, theta_d_yaw, 'r');
+plot(t, yawdata,':','LineWidth',2);
+plot(t, theta_yaw, 'r', "LineWidth", 1);
+plot(t, theta_d_yaw, 'g');
 plot(t, theta_dd_yaw, 'r');
 legend("measured","fitted");
 hold off;
 
 
 
-%%
+%% Dynamics calculation
 
 
 
@@ -71,7 +50,7 @@ k_1_pos = mean(K_aero_1_positive);
 
 for i = 1:1:length(theta_yaw)
     
-    F1(i) = 9e-4 * Vmotor1(i)^2;
+    F1(i) = 8e-4 * Vmotor1(i)^2;
     k_yaw(i) = (F1(i)*Dt - Jy*theta_dd_yaw(i))/theta_d_yaw(i);
 
 end

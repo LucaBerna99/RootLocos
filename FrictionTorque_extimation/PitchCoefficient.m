@@ -3,7 +3,7 @@
     pitch_motor_OFF = load("Pitch_motorOFF.mat");
 
 %% ACQUISITION
-    % TODO cut
+
     start = 5100;
     finish = 12000;
     t = pitch_motor_OFF.data(1,start:end)-start*0.002;
@@ -11,7 +11,7 @@
 
 %% DYNAMICs
 
-    %% Derivatives
+    %% FITTING
     
     fit_dyn = @(x_dyn,t) (x_dyn(1)+ x_dyn(2)*t) .* exp(-x_dyn(3)*t) .* cos(x_dyn(4)*t+x_dyn(5));
     x0_dyn = [ydata(1),1,1,1,1];
@@ -28,7 +28,8 @@
     ydata(length(ydata)) = [];
     ydata(length(ydata)-1) = [];
 
-                 
+    %% DERIVATIVES
+
     theta = fit_dyn(x_dyn,t);
     theta_d = diff(theta) ./ 0.002;
     theta_dd = diff(theta_d) ./ 0.002;
@@ -38,6 +39,9 @@
     theta(length(theta)) = [];
     theta(length(theta)-1)= [];
     theta_d(length(theta_d)) = [];
+
+
+    %% PLOTs
 
     set(figure, "WindowStyle", "docked");
     hold on; grid;
@@ -56,7 +60,7 @@
     title("theta and its derivatives");    
     
     
-    %% finding C_R with dynamics formulas
+    %% finding K_pitch with dynamics formulas
     
     jj =0;
     for j=1:1:length(t)
@@ -78,21 +82,25 @@
     t_s = pitch_motor_OFF.data(1,small_start:end)-(small_start*0.002);
     ydata_s = pitch_motor_OFF.data(2,small_start:end)*Pitch_encoder_res;
     
+    %% FITTING
+
     fit_small_angle = @(x_s,t_s) x_s(1) .* exp(-x_s(2)*t_s) .* cos(x_s(3)*t_s +x_s(4));
     x0 = [ydata_s(1),1,1,1];
     x_s = lsqcurvefit(fit_small_angle, x0, t_s, ydata_s);
     
-    %% analytical functions
     
     theta_small = fit_small_angle(x_s,t_s);
     smorz = (x_s(1)) .* exp(-x_s(2)*t_s);
 
+    %% DERIVATIVE
+
     theta_d_small = diff(theta_small) / 0.002;
     
-    %alpha = k_p_KIN / (2*M_eq)
     k_p_KIN = x_s(2) * 2 * (Mb*Dm^2 + Jp); 
     
     
+    %% PLOTs
+
     set(figure, "WindowStyle", "docked");
     grid;
     hold on;
@@ -106,7 +114,7 @@
 
 
 
-%% RESULTs
+%% COMPARISONs & RESULTs
     clc
 
     set(figure, "WindowStyle", "docked");
