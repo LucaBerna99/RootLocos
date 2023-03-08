@@ -41,6 +41,15 @@ theta_yaw = yaw_fit(yaw, t);
 theta_d_yaw = diff(theta_yaw) / 0.002;
 theta_dd_yaw = diff(theta_d_yaw) / 0.002;
 
+yawdata(length(t)) = [];
+yawdata(length(t)-1) = [];
+theta_yaw(length(t)) = [];
+theta_yaw(length(t)-1) = [];
+theta_d_yaw(length(t)-1) = [];
+t(length(t)) = [];
+t(length(t)-1) = [];
+
+
 set(figure, "WindowStyle", "docked");
 grid;
 hold on;
@@ -59,9 +68,10 @@ hold off;
 
 k_aero_1_positive();
 k_1_pos = mean(K_aero_1_positive);
+
 for i = 1:1:length(theta_yaw)
     
-    F1(i) = 8e-4 * Vmotor1(i)^2;
+    F1(i) = 9e-4 * Vmotor1(i)^2;
     k_yaw(i) = (F1(i)*Dt - Jy*theta_dd_yaw(i))/theta_d_yaw(i);
 
 end
