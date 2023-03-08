@@ -11,11 +11,11 @@ parameters();
 %% DATA ACQUISITION
 
 %% K_pitch
-Pitch_MotorOFF();
+PitchCoefficient();
 close all;
 
 %% k_yaw
-Pitch_Yaw();
+YawCoefficient();
 close all;
 
 %% AERO

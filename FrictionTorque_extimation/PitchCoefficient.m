@@ -73,8 +73,10 @@
     
     %% Filtering data 
     
-    t_s = pitch_motor_OFF.data(1,16100:end)-32.20;
-    ydata_s = pitch_motor_OFF.data(2,16100:end)*Pitch_encoder_res;
+    small_start = 16050;
+
+    t_s = pitch_motor_OFF.data(1,small_start:end)-(small_start*0.002);
+    ydata_s = pitch_motor_OFF.data(2,small_start:end)*Pitch_encoder_res;
     
     fit_small_angle = @(x_s,t_s) x_s(1) .* exp(-x_s(2)*t_s) .* cos(x_s(3)*t_s +x_s(4));
     x0 = [ydata_s(1),1,1,1];
@@ -87,7 +89,8 @@
 
     theta_d_small = diff(theta_small) / 0.002;
     
-    k_p_KIN = x_s(3) * 2 * (Mb*Dm^2 + Jp); 
+    %alpha = k_p_KIN / (2*M_eq)
+    k_p_KIN = x_s(2) * 2 * (Mb*Dm^2 + Jp); 
     
     
     set(figure, "WindowStyle", "docked");
@@ -119,6 +122,5 @@
     k_p_DYN;
     k_p_KIN;  %small angles
     k_pitch = (k_p_DYN + k_p_KIN)/2;
-
 
 
