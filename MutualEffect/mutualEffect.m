@@ -16,19 +16,24 @@ k_aero = 0.088;
 
     %% FITTING
     
-    yaw_fit_m0 = @(yaw_par,t) yaw_par(1).*t.^4 + yaw_par(2).*t.^3 + yaw_par(3).*t.^2 + yaw_par(4).*t + yaw_par(5);
-    yaw_par0_m0 = [1,1,1,1,1,1];
+    yaw_fit_m0 = @(yaw_par_m0,t_m0) yaw_par_m0(1).*t_m0.^8 + yaw_par_m0(2).*t_m0.^7 + yaw_par_m0(3).*t_m0.^6 + yaw_par_m0(4).*5 + yaw_par_m0(5).*t_m0.^4 + yaw_par_m0(6).*t_m0.^3 + + yaw_par_m0(7).*t_m0.^2+ + yaw_par_m0(8).*t_m0 + + yaw_par_m0(9);
+    yaw_par0_m0 = [0,0,0,0,0,0,0,0,0];
     yaw_par_m0 = lsqcurvefit(yaw_fit_m0, yaw_par0_m0, t_m0, yaw_m0);
     
-    A_m0 = yaw_par_m0(1);
-    B_m0 = yaw_par_m0(2);
-    C_m0 = yaw_par_m0(3);
-    D_m0 = yaw_par_m0(4);
-    E_m0 = yaw_par_m0(5);
+       
+    phi_yaw_m0 = yaw_fit_m0(yaw_par_m0, t_m0);
+    phi_d_yaw_m0 = diff(phi_yaw_m0)/0.002;
+    phi_dd_yaw_m0 = diff(phi_d_yaw_m0)/0.002;
+
+    yaw_m0(length(t_m0)) = [];
+    yaw_m0(length(t_m0)-1) = [];
+    phi_yaw_m0(length(t_m0)) = [];
+    phi_yaw_m0(length(t_m0)-1) = [];
+    phi_d_yaw_m0(length(t_m0)-1) = [];
+    t_m0(length(t_m0)) = [];
+    t_m0(length(t_m0)-1) = [];
+
     
-    phi_yaw_m0 = A_m0.*t_m0.^4 + B_m0.*t_m0.^3 + C_m0.*t_m0.^2 + D_m0.*t_m0 + E_m0;
-    phi_d_yaw_m0 = 4*A_m0.*t_m0.^3 + 3*B_m0.*t_m0.^2 + 2*C_m0.*t_m0 + D_m0;
-    phi_dd_yaw_m0 = 12*A_m0.*t_m0.^2 + 6*B_m0.*t_m0 + 2*C_m0;
     
     %% PLOT DERIVATIVES
     
