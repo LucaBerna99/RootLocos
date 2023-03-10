@@ -1,5 +1,13 @@
-%% PARAMETERS
 
+
+function PitchCoefficient(fig)
+
+%% GLOBALs
+    
+    global k_pitch
+
+%% PARAMETERS
+    parameters();
     pitch_motor_OFF = load("Pitch_motorOFF.mat");
 
 %% ACQUISITION
@@ -42,23 +50,23 @@
 
 
     %% PLOTs
-
-    set(figure, "WindowStyle", "docked");
-    hold on; grid;
-    plot(t,ydata);
-    plot(t, fit_dyn(x_dyn,t));
-    xline(tzero);
-    xline(tzero+period);
-    xline(tzero+2*period);
-    xline(tzero+3*period);
-    hold off;
-    legend("measured","fitted_{DYNAMIC}");
-
-    set(figure, "WindowStyle", "docked");
-    plot(t,theta,t,theta_d,t,theta_dd);
-    legend("\theta","\theta_d","\theta_dd");
-    title("theta and its derivatives");    
+    if fig == 1
+        set(figure, "WindowStyle", "docked");
+        hold on; grid;
+        plot(t,ydata);
+        plot(t, fit_dyn(x_dyn,t));
+        xline(tzero);
+        xline(tzero+period);
+        xline(tzero+2*period);
+        xline(tzero+3*period);
+        hold off;
+        legend("measured","fitted_{DYNAMIC}");
     
+        set(figure, "WindowStyle", "docked");
+        plot(t,theta,t,theta_d,t,theta_dd);
+        legend("\theta","\theta_d","\theta_dd");
+        title("theta and its derivatives");    
+    end
     
     %% finding K_pitch with dynamics formulas
     
@@ -100,35 +108,37 @@
     
     
     %% PLOTs
-
-    set(figure, "WindowStyle", "docked");
-    grid;
-    hold on;
-    plot(t_s,ydata_s)
-    plot(t_s,theta_small)
-    plot(t_s, smorz, t_s, -smorz);
-    yline(-15);
-    yline(15);
-    hold off;
-    title("KINEMATICS with small angles (<15 deg)");
+    if fig == 1
+        set(figure, "WindowStyle", "docked");
+        grid;
+        hold on;
+        plot(t_s,ydata_s)
+        plot(t_s,theta_small)
+        plot(t_s, smorz, t_s, -smorz);
+        yline(-15);
+        yline(15);
+        hold off;
+        title("KINEMATICS with small angles (<15 deg)");
+    end
 
 
 
 %% COMPARISONs & RESULTs
-    clc
 
-    set(figure, "WindowStyle", "docked");
-    grid;
-    hold on;
-    plot(t(1:length(t)),Cr)
-    plot(t(1:length(t)),k_p_KIN*theta_d(1:length(t)))
-    plot(t(1:length(t)),k_p_DYN*theta_d(1:length(t)))
-    hold off;
-    legend("Cr","k_p^{KIN}*\theta_d","k_p^{DYN}*\theta_d")
-    title("Comparison between Cr");
-
-    k_p_DYN;
-    k_p_KIN;  %small angles
     k_pitch = (k_p_DYN + k_p_KIN)/2;
 
+    if fig == 1
+        set(figure, "WindowStyle", "docked");
+        grid;
+        hold on;
+        plot(t(1:length(t)),k_pitch*theta_d(1:length(t)))
+        hold off;
+        legend("k_{PITCH}*\theta_d");
+        title("C_R");
+    end
+    
+
+    clc
+
+end
 
