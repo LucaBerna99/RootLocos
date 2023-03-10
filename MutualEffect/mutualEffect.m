@@ -2,7 +2,7 @@
 function mutualEffect(fig)
 
     %% GLOBAL
-    global k_py k_yp k_yaw
+    global k_py k_yp k_yaw w_pos
     
     
     %% Load Data
@@ -62,8 +62,9 @@ function mutualEffect(fig)
     
         for i = 1:length(t_m0)
     
+            k(i) = w_pos(3)*V0_m0(i)^2 + w_pos(2).*V0_m0(i) + w_pos(1);
             M0(i) = (k_yaw * phi_d_yaw_m0(i) + Jy * phi_dd_yaw_m0(i))*Dt;
-            k_yp_vect(i) = M0(i) / (k_aero * V0_m0(i)^2);
+            k_yp_vect(i) = M0(i) / (k(i) * V0_m0(i)^2);
     
         end
         if fig == 1
@@ -107,8 +108,9 @@ function mutualEffect(fig)
         
         for i =1:length(fit_voltage)
     
+            k(i) = w_pos(3)*V1_m1(i)^2 + w_pos(2).*V1_m1(i) + w_pos(1);
             M1(i) = Mb*g*abs(Dm) * sin(fit_pitch(i))*Dt;
-            k_yp_vect(i) = M1(i) / (k_aero * fit_voltage(i)^2);
+            k_yp_vect(i) = M1(i) / (k(i) * fit_voltage(i)^2);
     
         end
     

@@ -2,7 +2,7 @@
 function YawCoefficient(fig)
     
     %% GLOBAL 
-    global k_yaw
+    global k_yaw w_pos
 
     %% LOAD
     parameters();
@@ -51,14 +51,11 @@ function YawCoefficient(fig)
     
     %% Dynamics calculation
     
-    
-    
-    k_aero_1_positive();
-    k_1_pos = mean(K_aero_1_positive);
-    
+        
     for i = 1:1:length(theta_yaw)
         
-        F1(i) = 8e-4 * Vmotor1(i)^2;
+        k(i) = w_pos(3)*Vmotor1(i)^2 + w_pos(2).*Vmotor1(i) + w_pos(1);
+        F1(i) = k(i) * Vmotor1(i)^2;
         k_yaw_vec(i) = (F1(i)*Dt - Jy*theta_dd_yaw(i))/theta_d_yaw(i);
     
     end
