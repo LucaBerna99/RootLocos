@@ -34,16 +34,6 @@
 
 %% Other Constants
 
-g = 9.81;
-%rho = 1.22
+    g = 9.81;
 
-%% parameters identified
-
-%K = ; %constant parameter between vdc^2 and F
-%kr = ; %constant parameter between pitch_d and Cr
-
-%% Linearization Parameters
-pitch_ref = 15 ;                      %deg (to be modified for the specific pitch_ref to control)
-s_pitch_ref = sin(pitch_ref);
-c_pitch_ref = cos(pitch_ref);
 
