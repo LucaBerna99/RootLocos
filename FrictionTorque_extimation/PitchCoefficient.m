@@ -19,11 +19,20 @@ function PitchCoefficient(fig)
 
 %% DYNAMICs
 
+    %% BAD FITTING DAMPED DIFFERENTIAL EQUATION
+    %{
+    fit_diff = @(x_dyn,t) (x_diff(1)) .* exp(-x_diff(2)*t) .* cos(x_diff(3)*t+x_diff(4));
+    x0_diff = [ydata(1),1,1,1];
+    x_diff = lsqcurvefit(fit_diff, x_diff, t, ydata);
+    %}
+
     %% FITTING
     
     fit_dyn = @(x_dyn,t) (x_dyn(1)+ x_dyn(2)*t) .* exp(-x_dyn(3)*t) .* cos(x_dyn(4)*t+x_dyn(5));
     x0_dyn = [ydata(1),1,1,1,1];
     x_dyn = lsqcurvefit(fit_dyn, x0_dyn, t, ydata);
+   
+    
 
     %% PERIOD
     
@@ -70,7 +79,6 @@ function PitchCoefficient(fig)
     
     %% finding K_pitch with dynamics formulas
     
-    jj =0;
     for j=1:1:length(t)
         
         Cr(j) =  + Mb*g*abs(Dm)*sind(theta(j)) + (Jp + Mb*Dm^2)*theta_dd(j);
