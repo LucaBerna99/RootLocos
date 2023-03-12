@@ -13,7 +13,6 @@ function PitchCoefficient(fig)
 %% ACQUISITION
 
     start = 5100;
-    finish = 12000;
     t = pitch_motor_OFF.data(1,start:end)-start*0.002;
     ydata = pitch_motor_OFF.data(2,start:end)*Pitch_encoder_res;
 
@@ -21,9 +20,9 @@ function PitchCoefficient(fig)
 
     %% BAD FITTING DAMPED DIFFERENTIAL EQUATION
     %{
-    fit_diff = @(x_dyn,t) (x_diff(1)) .* exp(-x_diff(2)*t) .* cos(x_diff(3)*t+x_diff(4));
+    fit_diff = @(x_diff,t) (x_diff(1)) .* exp(-x_diff(2)*t) .* cos(x_diff(3)*t+x_diff(4));
     x0_diff = [ydata(1),1,1,1];
-    x_diff = lsqcurvefit(fit_diff, x_diff, t, ydata);
+    x_diff = lsqcurvefit(fit_diff, x0_diff, t, ydata);
     %}
 
     %% FITTING
@@ -81,13 +80,13 @@ function PitchCoefficient(fig)
     
     for j=1:1:length(t)
         
-        Cr(j) =  + Mb*g*abs(Dm)*sind(theta(j)) + (Jp + Mb*Dm^2)*theta_dd(j);
+        Cr(j) =  - Mb*g*Dm*sind(theta(j)) - (Jp + Mb*Dm^2)*theta_dd(j);
         k_dyn(j) = Cr(j) / sign(theta_d(j));
                 
     end
     
-    k_p_DYN = abs(mean(k_dyn));    
-    
+    k_p_DYN = abs(mean(k_dyn));
+
 
 %% KINEMATICS with sin(THETA) = THETA --> SMALL ANGLE
     
@@ -131,7 +130,7 @@ function PitchCoefficient(fig)
 
 
 
-%% COMPARISONs & RESULTs
+%% RESULTs
 
     k_pitch = (k_p_DYN + k_p_KIN)/2;
 
@@ -146,7 +145,7 @@ function PitchCoefficient(fig)
     end
     
 
-    clc
+    
 
 end
 

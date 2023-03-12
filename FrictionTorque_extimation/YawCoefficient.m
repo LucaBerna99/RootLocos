@@ -9,10 +9,10 @@ function YawCoefficient(fig)
     pitch_yaw = load("Pitch_Yaw_18-28-30.mat");
     
     %% ACQUISITION
-    
-    t = pitch_yaw.data(1,43000:end)-86.0;
-    yawdata = pitch_yaw.data(2,43000:end)*Yaw_encoder_res*pi/180;
-    Vmotor1 = pitch_yaw.data(4,43000:end);
+    start = 43000;
+    t = pitch_yaw.data(1,start:end)-start*0.002;
+    yawdata = pitch_yaw.data(2,start:end)*Yaw_encoder_res*pi/180;
+    Vmotor1 = pitch_yaw.data(4,start:end);
     
     %% FITTING
     
