@@ -4,7 +4,6 @@ clc
 close all
 clear all
 
-
 %% GLOBAL VARIABLES
 global k_pitch k_yaw k_py k_yp w_pos w_neg
 
@@ -18,7 +17,7 @@ PitchCoefficient(0);
 YawCoefficient(0);
 
 %% k_py, k_yp
-mutualEffect(0);
+mutualEffect(1);
 
 %% SAVE
-save("Coefficients.mat");
+%save(".\Coefficients.mat");

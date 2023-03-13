@@ -3,11 +3,10 @@ function mutualEffect(fig)
 
     %% GLOBAL
     global k_py k_yp k_yaw w_pos
-    
+    parameters();
     
     %% Load Data
-
-    parameters();
+    
     mutual0 = load('M0steps_MutualYaw.mat');
     
     start_m0 = 120/0.002;
@@ -15,9 +14,7 @@ function mutualEffect(fig)
     t_m0 = mutual0.data(1,start_m0:finish_m0)-start_m0*0.002;
     yaw_m0 = mutual0.data(3,start_m0:finish_m0)*Yaw_encoder_res;
     V0_m0 = mutual0.data(4,start_m0:finish_m0);
-    
-    k_aero = 8e-4;
-    
+        
     
     %% Effect of M0 on the yaw movement
     
@@ -62,21 +59,21 @@ function mutualEffect(fig)
     
         for i = 1:length(t_m0)
     
-            k(i) = w_pos(3)*V0_m0(i)^2 + w_pos(2).*V0_m0(i) + w_pos(1);
-            M0(i) = (k_yaw * phi_d_yaw_m0(i) + Jy * phi_dd_yaw_m0(i))*Dt;
-            k_yp_vect(i) = M0(i) / (k(i) * V0_m0(i)^2);
+            k(i) = w_pos(3)*V0_m0(i)^2 + w_pos(2)*V0_m0(i) + w_pos(1);
+            M0(i) = (k_yaw * phi_d_yaw_m0(i) + Jy * phi_dd_yaw_m0(i)) * Dt;
+            k_py_vect(i) = M0(i) / (k(i) * V0_m0(i)^2);
     
         end
         if fig == 1
             set(figure, "WindowStyle", "docked");
             grid;
             hold on;
-            plot(t_m0, k_yp_vect,'LineWidth',1.5);
+            plot(t_m0, k_py_vect,'LineWidth',1.5);
             title("Mutual Coeff pitch-yaw");
             hold off;
         end
     
-        k_py = abs(mean(k_yp_vect));
+        k_py = mean(k_py_vect());
     
     
     
@@ -84,10 +81,10 @@ function mutualEffect(fig)
     
     mutual1 = load('M1steps_Mutual.mat');
     
-    start_m1 = 1; %120/0.002;
-    finish_m1 = 90/0.002;
+    start_m1 = 52;
+    finish_m1 = 45000;
     t_m1 = mutual1.data(1,start_m1:finish_m1) - start_m1*0.002;
-    pitch_m1 = mutual1.data(3,start_m1:finish_m1)*Pitch_encoder_res*pi/180;
+    pitch_m1 = mutual1.data(3,start_m1:finish_m1)*Pitch_encoder_res;
     V1_m1 = mutual1.data(2,start_m1:finish_m1);
     
     if fig == 1
@@ -100,21 +97,15 @@ function mutualEffect(fig)
     end
     
     
-    %% Effect of M0 on the yaw movement
+    %% Effect of M1 on the pitch movement
         
-        
-        fit_pitch = [0.528, 3.696, 7.744];
-        fit_voltage = [2.0, 4.0, 6.0];
-        
-        for i =1:length(fit_voltage)
-    
-            k(i) = w_pos(3)*V1_m1(i)^2 + w_pos(2).*V1_m1(i) + w_pos(1);
-            M1(i) = Mb*g*abs(Dm) * sin(fit_pitch(i))*Dt;
-            k_yp_vect(i) = M1(i) / (k(i) * fit_voltage(i)^2);
-    
+        for i =1:length(t_m1)
+            k(i) = w_pos(3)*V1_m1(i)^2 + w_pos(2)*V1_m1(i) + w_pos(1);
+            M1(i) = Mb * g * Dm * Dt *sind(pitch_m1(i));
+            k_yp_vect(i) = M1(i) / (k(i) * V1_m1(i)^2);
         end
     
-        k_yp = abs(mean(k_yp_vect));
+        k_yp = mean(k_yp_vect);
     
         if fig == 1
             set(figure, "WindowStyle", "docked");
@@ -128,6 +119,10 @@ function mutualEffect(fig)
         clc
 
 end
+
+%% TODO Confronto
+
+
 
 
 
