@@ -17,7 +17,7 @@ PitchCoefficient(0);
 YawCoefficient(0);
 
 %% k_py, k_yp
-mutualEffect(1);
+mutualEffect(0);
 
 %% SAVE
-%save(".\Coefficients.mat");
+uisave();
