@@ -14,7 +14,7 @@ K_aero_MAP(0);
 PitchCoefficient(0);
 
 %% k_yaw
-YawCoefficient(0);
+YawCoefficient(1);
 
 %% k_py, k_yp
 mutualEffect(0);
