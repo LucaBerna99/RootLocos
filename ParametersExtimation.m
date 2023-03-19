@@ -23,7 +23,17 @@ YawCoefficient(0);
 mutualEffect(0);
 
 %% STATIC FORCE
-StaticFriction(0);
+StaticFriction(1);
 
 %% SAVE
-uisave();
+%uisave();
+
+%% FREQ VALIDATION 
+% IN = Pitch
+% 1: OUT=Pitch, 2: OUT=Yaw
+    FreqValidationPitchMotor(0, 1);
+    FreqValidationPitchMotor(0, 2);
+    
+
+
+

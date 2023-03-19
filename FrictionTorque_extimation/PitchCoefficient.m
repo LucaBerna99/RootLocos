@@ -26,7 +26,7 @@ function PitchCoefficient(fig)
     %}
 
     %% FITTING
-    
+
     fit_dyn = @(x_dyn,t) (x_dyn(1)+ x_dyn(2)*t) .* exp(-x_dyn(3)*t) .* cos(x_dyn(4)*t+x_dyn(5));
     x0_dyn = [ydata(1),1,1,1,1];
     x_dyn = lsqcurvefit(fit_dyn, x0_dyn, t, ydata);
@@ -78,14 +78,36 @@ function PitchCoefficient(fig)
     
     %% finding K_pitch with dynamics formulas
     
-    for j=1:1:length(t)
-        
+    for j=1:length(t)        
         Cr(j) =  - Mb*g*Dm*sind(theta(j)) - (Jp + Mb*Dm^2)*theta_dd(j);
-        k_dyn(j) = Cr(j) / sign(theta_d(j));
-                
+        k_dyn(j) = Cr(j) / sign(theta_d(j));  
     end
     
-    k_p_DYN = abs(mean(k_dyn));
+    %for j=1:length(t)
+        
+        %Fn(j) = Mb* (theta_d(j)^2 - g*cosd(theta(j)));
+        %k_dyn(j) = (theta_dd(j) + Dm*g*(theta(j))) / (-Dm*abs(Fn(j))*sign(theta_d(j)));
+        
+    %end
+    
+    k_p_DYN = abs(mean(k_dyn))
+    
+ 
+    %%
+    t = [942, 2840, 4654, 6467, 8281, 10060, 11894] * 0.002;
+    p = [53.33, 43.82, 35.73, 28.69, 22.7, 17.25, 12.85];
+
+    for i = 1:length(t)-1
+        wd(i) = 2*pi /(t(i+1)-t(i));
+        xi(i) = log(p(i)/p(i+1)) / sqrt(4*pi^2 + (log(p(i)/p(i+1)))^2);
+    end
+
+    wd = mean(wd);
+    xi = mean(xi);
+
+    wn = wd / sqrt(1-xi^2);
+    damping = 2*wn*xi*(Jp+Mb*Dm^2)
+    
 
 
 %% KINEMATICS with sin(THETA) = THETA --> SMALL ANGLE
@@ -111,7 +133,7 @@ function PitchCoefficient(fig)
 
     theta_d_small = diff(theta_small) / 0.002;
     
-    k_p_KIN = x_s(2) * 2 * (Mb*Dm^2 + Jp); 
+    k_p_KIN = x_s(2) * 2 * (Mb*Dm^2 + Jp)
     
     
     %% PLOTs
@@ -138,14 +160,21 @@ function PitchCoefficient(fig)
         set(figure, "WindowStyle", "docked");
         grid;
         hold on;
-        plot(t(1:length(t)),k_pitch*theta_d(1:length(t)))
+        plot(t(1:length(t)),k_pitch.*theta_d(1:length(t)))
         hold off;
         legend("k_{PITCH}*\theta_d");
         title("C_R");
     end
     
+%%
 
-    
+
 
 end
+
+
+%%
+
+
+
 
