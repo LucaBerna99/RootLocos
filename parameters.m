@@ -15,6 +15,8 @@
     Jp = 2.15e-2;       %kg-m2
     Jy = 2.37e-2;       %kg-m2
     Dt = 15.8/100;      %cm ->m
+    Jeq = Jp + Mb*Dm^2; %kg-m2
+    
 %Motor and Pitch Encoders
     Pitch_encoder_line_count = 512;             %lines/rev
     Pitch_encoder_line_count_quad = 2048;       %lines/rev
