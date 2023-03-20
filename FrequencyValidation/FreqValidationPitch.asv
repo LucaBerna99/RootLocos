@@ -1,0 +1,91 @@
+
+function FreqValidationPitch(fig)
+
+%% LOAD DATA
+
+parameters();
+
+f_0_1 = load('freq10_M0_mutual_1.mat');
+f_0_1.data(2,:) = f_0_1.data(2,:)*Pitch_encoder_res;
+f_0_1.data(3,:) = f_0_1.data(3,:)*Yaw_encoder_res;
+
+f_0_2 = load('freq20_M0_mutual.mat');
+f_0_2.data(2,:) = f_0_2.data(2,:)*Pitch_encoder_res;
+f_0_2.data(3,:) = f_0_2.data(3,:)*Yaw_encoder_res;
+
+f_1 = load('freq100_M0_mutual.mat');
+f_1.data(2,:) = f_1.data(2,:)*Pitch_encoder_res;
+f_1.data(3,:) = f_1.data(3,:)*Yaw_encoder_res;
+
+f_1_25 = load('freq125_M0_mutual.mat');
+f_1_25.data(2,:) = f_1_25.data(2,:)*Pitch_encoder_res;
+f_1_25.data(3,:) = f_1_25.data(3,:)*Yaw_encoder_res;
+
+f_1_3 = load('freq130_M0_mutual.mat');
+f_1_3.data(2,:) = f_1_3.data(2,:)*Pitch_encoder_res;
+f_1_3.data(3,:) = f_1_3.data(3,:)*Yaw_encoder_res;
+
+f_1_4 = load('freq140_M0_mutual.mat');
+f_1_4.data(2,:) = f_1_4.data(2,:)*Pitch_encoder_res;
+f_1_4.data(3,:) = f_1_4.data(3,:)*Yaw_encoder_res;
+
+f_1_45 = load('freq145_M0_mutual.mat');
+f_1_45.data(2,:) = f_1_45.data(2,:)*Pitch_encoder_res;
+f_1_45.data(3,:) = f_1_45.data(3,:)*Yaw_encoder_res;
+
+f_1_5 = load('freq150_M0_mutual.mat');
+f_1_5.data(2,:) = f_1_5.data(2,:)*Pitch_encoder_res;
+f_1_5.data(3,:) = f_1_5.data(3,:)*Yaw_encoder_res;
+
+f_1_6 = load('freq160_M0_mutual.mat');
+f_1_6.data(2,:) = f_1_6.data(2,:)*Pitch_encoder_res;
+f_1_6.data(3,:) = f_1_6.data(3,:)*Yaw_encoder_res;
+
+f_1_63 = load('freq163_M0_mutual.mat');
+f_1_63.data(2,:) = f_1_63.data(2,:)*Pitch_encoder_res;
+f_1_63.data(3,:) = f_1_63.data(3,:)*Yaw_encoder_res;
+
+f_1_65 = load('freq165_M0_mutual.mat');
+f_1_65.data(2,:) = f_1_65.data(2,:)*Pitch_encoder_res;
+f_1_65.data(3,:) = f_1_65.data(3,:)*Yaw_encoder_res;
+
+f_1_67 = load('freq167_M0_mutual.mat');
+f_1_67.data(2,:) = f_1_67.data(2,:)*Pitch_encoder_res;
+f_1_67.data(3,:) = f_1_67.data(3,:)*Yaw_encoder_res;
+
+f_1_69 = load('freq169_M0_mutual.mat');
+f_1_69.data(2,:) = f_1_69.data(2,:)*Pitch_encoder_res;
+f_1_69.data(3,:) = f_1_69.data(3,:)*Yaw_encoder_res;
+
+f_2 = load('freq200_M0_mutual.mat');
+f_2.data(2,:) = f_2.data(2,:)*Pitch_encoder_res;
+f_2.data(3,:) = f_2.data(3,:)*Yaw_encoder_res;
+
+f_5 = load('freq500_M0_mutual.mat');
+f_5.data(2,:) = f_5.data(2,:)*Pitch_encoder_res;
+f_5.data(3,:) = f_5.data(3,:)*Yaw_encoder_res;
+
+f_10 = load('freq1000_M0_mutual.mat');
+f_10.data(2,:) = f_10.data(2,:)*Pitch_encoder_res;
+f_10.data(3,:) = f_10.data(3,:)*Yaw_encoder_res;
+
+f_20 = load('freq2000_M0_mutual.mat');
+f_20.data(2,:) = f_20.data(2,:)*Pitch_encoder_res;
+f_20.data(3,:) = f_20.data(3,:)*Yaw_encoder_res;
+
+
+%% Parameters
+
+%1 - Time
+%2 - Pitch
+%3 - Yaw
+%4 - V0
+%5 - V1
+
+
+%% GLOBAL
+
+
+
+
+end
