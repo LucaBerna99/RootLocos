@@ -89,7 +89,7 @@ clc
     hold on; grid;
     margin(G_exp_Pitch, phaseShift_Pitch, f);
     bode(G_model_Pitch);
-    title("IN: V_{Motor1}  OUT: PITCH");
+    title({"IN: V_{Motor1}","OUT: PITCH"});
     legend("G_{EXP}^{PITCH}", "G_{MODEL}^{PITCH}");
     hold off;
 
@@ -133,7 +133,7 @@ clc
     hold on; grid;
     margin(G_exp_Yaw, phaseShift_Yaw, f);
     bode(G_model_Yaw, {0.01, 20});
-    title("IN: V_{Motor1}  OUT: YAW");
+    title({"IN: V_{Motor1}","OUT: YAW"});
     legend("G_{EXP}^{YAW}", "G_{MODEL}^{YAW}");
     hold off;
 
