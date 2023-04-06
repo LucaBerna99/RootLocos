@@ -1,0 +1,1 @@
+addpath(genpath('C:\Users\lbend\OneDrive\Desktop\AUTLAB\RootLocos'))

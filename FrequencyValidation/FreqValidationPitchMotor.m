@@ -1,5 +1,6 @@
 
 clear all
+close all
 clc
 
     %% GLOBAL
@@ -8,154 +9,160 @@ clc
     load("parameters.mat");
     load("Coefficients.mat");
         
-    fig = 0;
+    cutoff_freq = 2;
+    T = 0.002;
+    fig = 1;
     %% LOAD DATA
 
+    signal = load("FreqVal_M0_16-19-24_.mat");
     
-
-    %1-Time  2-Pitch  3-Yaw  4-V0  5-V1
-
-    f_0_1 = load('freq10_M0_mutual_1.mat');
-    f_0_1.data(2,:) = f_0_1.data(2,:)*Pitch_encoder_res - f_0_1.data(2,1)*Pitch_encoder_res;
-    f_0_1.data(3,:) = f_0_1.data(3,:)*Yaw_encoder_res - f_0_1.data(3,1)*Yaw_encoder_res;
-
-    f_0_2 = load('freq20_M0_mutual.mat');
-    f_0_2.data(2,:) = f_0_2.data(2,:)*Pitch_encoder_res - f_0_2.data(2,1)*Pitch_encoder_res;
-    f_0_2.data(3,:) = f_0_2.data(3,:)*Yaw_encoder_res - f_0_2.data(3,1)*Yaw_encoder_res;
-
-    f_1 = load('freq100_M0_mutual.mat');
-    f_1.data(2,:) = f_1.data(2,:)*Pitch_encoder_res - f_1.data(2,1)*Pitch_encoder_res;
-    f_1.data(3,:) = f_1.data(3,:)*Yaw_encoder_res - f_1.data(3,1)*Yaw_encoder_res;
-
-    f_1_25 = load('freq125_M0_mutual.mat');
-    f_1_25.data(2,:) = f_1_25.data(2,:)*Pitch_encoder_res - f_1_25.data(2,1)*Pitch_encoder_res;
-    f_1_25.data(3,:) = f_1_25.data(3,:)*Yaw_encoder_res -f_1_25.data(3,1)*Yaw_encoder_res;
-
-    f_1_3 = load('freq130_M0_mutual.mat');
-    f_1_3.data(2,:) = f_1_3.data(2,:)*Pitch_encoder_res - f_1_3.data(2,1)*Pitch_encoder_res;
-    f_1_3.data(3,:) = f_1_3.data(3,:)*Yaw_encoder_res -f_1_3.data(3,1)*Yaw_encoder_res;
-
-    f_1_4 = load('freq140_M0_mutual.mat');
-    f_1_4.data(2,:) = f_1_4.data(2,:)*Pitch_encoder_res - f_1_4.data(2,1)*Pitch_encoder_res;
-    f_1_4.data(3,:) = f_1_4.data(3,:)*Yaw_encoder_res - f_1_4.data(3,1)*Yaw_encoder_res;
-
-    f_1_45 = load('freq145_M0_mutual.mat');
-    f_1_45.data(2,:) = f_1_45.data(2,:)*Pitch_encoder_res - f_1_45.data(2,1)*Pitch_encoder_res;
-    f_1_45.data(3,:) = f_1_45.data(3,:)*Yaw_encoder_res -f_1_45.data(3,1)*Yaw_encoder_res;
-
-    f_1_5 = load('freq150_M0_mutual.mat');
-    f_1_5.data(2,:) = f_1_5.data(2,:)*Pitch_encoder_res - f_1_5.data(2,1)*Pitch_encoder_res;
-    f_1_5.data(3,:) = f_1_5.data(3,:)*Yaw_encoder_res -f_1_5.data(3,1)*Yaw_encoder_res;
-
-    f_1_6 = load('freq160_M0_mutual.mat');
-    f_1_6.data(2,:) = f_1_6.data(2,:)*Pitch_encoder_res - f_1_6.data(2,1)*Pitch_encoder_res;
-    f_1_6.data(3,:) = f_1_6.data(3,:)*Yaw_encoder_res -f_1_6.data(3,1)*Yaw_encoder_res;
-
-    f_1_63 = load('freq163_M0_mutual.mat');
-    f_1_63.data(2,:) = f_1_63.data(2,:)*Pitch_encoder_res - f_1_63.data(2,1)*Pitch_encoder_res;
-    f_1_63.data(3,:) = f_1_63.data(3,:)*Yaw_encoder_res -f_1_63.data(3,1)*Yaw_encoder_res;
-
-    f_1_65 = load('freq165_M0_mutual.mat');
-    f_1_65.data(2,:) = f_1_65.data(2,:)*Pitch_encoder_res - f_1_65.data(2,1)*Pitch_encoder_res;
-    f_1_65.data(3,:) = f_1_65.data(3,:)*Yaw_encoder_res -f_1_65.data(3,1)*Yaw_encoder_res;
-
-    f_1_67 = load('freq167_M0_mutual.mat');
-    f_1_67.data(2,:) = f_1_67.data(2,:)*Pitch_encoder_res - f_1_67.data(2,1)*Pitch_encoder_res;
-    f_1_67.data(3,:) = f_1_67.data(3,:)*Yaw_encoder_res -f_1_67.data(3,1)*Yaw_encoder_res;
-
-    f_1_69 = load('freq169_M0_mutual.mat');
-    f_1_69.data(2,:) = f_1_69.data(2,:)*Pitch_encoder_res - f_1_69.data(2,1)*Pitch_encoder_res;
-    f_1_69.data(3,:) = f_1_69.data(3,:)*Yaw_encoder_res -f_1_69.data(3,1)*Yaw_encoder_res;
-
-    f_2 = load('freq200_M0_mutual.mat');
-    f_2.data(2,:) = f_2.data(2,:)*Pitch_encoder_res - f_2.data(2,1)*Pitch_encoder_res;
-    f_2.data(3,:) = f_2.data(3,:)*Yaw_encoder_res -f_2.data(3,1)*Yaw_encoder_res;
-
-    f_5 = load('freq500_M0_mutual.mat');
-    f_5.data(2,:) = f_5.data(2,:)*Pitch_encoder_res - f_5.data(2,1)*Pitch_encoder_res;
-    f_5.data(3,:) = f_5.data(3,:)*Yaw_encoder_res- f_5.data(3,1)*Yaw_encoder_res;
-
-    f_10 = load('freq1000_M0_mutual.mat');
-    f_10.data(2,:) = f_10.data(2,:)*Pitch_encoder_res - f_10.data(2,1)*Pitch_encoder_res;
-    f_10.data(3,:) = f_10.data(3,:)*Yaw_encoder_res - f_10.data(3,1)*Yaw_encoder_res;
-
-    f_20 = load('freq2000_M0_mutual.mat');
-    f_20.data(2,:) = f_20.data(2,:)*Pitch_encoder_res - f_20.data(2,1)*Pitch_encoder_res;
-    f_20.data(3,:) = f_20.data(3,:)*Yaw_encoder_res -f_20.data(3,1)*Yaw_encoder_res;
     
-    % GLOBAL
-    freq = [f_0_1, f_0_2, f_1, f_1_25, f_1_3, f_1_4, f_1_45, f_1_5, f_1_6, f_1_63, f_1_65, f_1_67, f_1_69, f_2, f_5, f_10, f_20];
-    f = [0.1, 0.2, 1, 1.25, 1.3, 1.4, 1.45, 1.5, 1.6, 1.63, 1.65, 1.67, 1.69, 2, 5, 10, 20];
-
+    %% Signal isolation
+    
+    w = [0.1, 0.3, 0.6, 1, 1.1, 1.3, 1.5, 2, 3, 6, 10, 30, 100];
+    signDurInd = 0;
+    
+    for i= 1:length(w)
+        if i < 3
+            numPer = 2;
+        else
+            numPer = 5;
+        end
+        
+        sinDur = 2*pi*numPer / w(i);
+        sinDurInd = floor(sinDur / 0.002);
+        pauseDurInd = 10 / 0.002;
+        
+        start = signDurInd + 1;
+        
+        signDurInd = signDurInd + sinDurInd + pauseDurInd;
+        stop =  signDurInd - pauseDurInd  + 1; 
+        
+        temp = signal.data(1,start:stop) - (start-1)*0.002;
+        tt = signal.data(1,start:stop) - (start-1)*0.002;
+        period(i,1:length(tt)) = 0:0.002:sinDur;
+        pitch_m0(i,1:length(tt)) = signal.data(2,start:stop);
+        pitch_m0(i,:) = pitch_m0(i,:) - pitch_m0(i,1);
+        [b,a] = butter(2,[w(i)*0.004*0.1, 2.4*w(i)*0.004]); 
+        pitch_m0(i,:) = filtfilt(b, a, pitch_m0(i,:));
+        
+        yaw_m0(i,1:length(tt)) = signal.data(3,start:stop);
+        yaw_m0(i,:) = yaw_m0(i,:) - yaw_m0(i,1);
+        [b,a] = butter(1, cutoff_freq*0.004, 'low');
+        yaw_m0(i,:) = filtfilt(b, a, yaw_m0(i,:));
+        
+        V_m0(i,1:length(tt)) = signal.data(4,start:stop);   
+   
+    end
+    
+    %{
+    pitch_m0_d = diff(pitch_m0) / T;
+    pitch_m0_d(length(pitch_m0)) = 0;
+    pitch_m0_dd = diff(pitch_m0_d) / T;
+    pitch_m0_dd(length(pitch_m0_d)) = 0;  
+    
+    %}
+    
 %% PITCH effect
 
-    for i=1:length(freq) 
-        stop = round(2*pi / f(i) / 0.002) + 1 ;
-        t = freq(i).data(1,1:end);
+    for i=1:length(w)
+        
+        if i < 3
+            numPer = 2;
+        else
+            numPer = 5;
+        end
+        sinDur = 2*pi*numPer / w(i);
+        t = 0:0.002:sinDur;
+        
+        [ampI, indexI] = findpeaks(V_m0(i,:));
+        [ampO, indexO] = findpeaks(pitch_m0(i,indexI(1):end));
+        indexO = indexO + indexI(1);
+        
+        jj = 1;
+        while ampO(jj) < 0
+            jj = jj + 1;    
+        end
+
+        if isempty(ampO) || max(ampO) < 2
+            ampO = 0;
+        end
+        
+        deltaT(i) = (indexI(1)- indexO(jj)) * 0.002;
+        
+        
+        Magn_Pitch(i) = max(ampO) / max(ampI);
+            
+        phaseShift_Pitch(i) = deltaT(i) * w(i) * 180/pi;
+        
+        if isempty(ampO) || max(ampO) < 2
+            phaseShift_Pitch(i) = -180;
+        end
+        
         if fig == 1
             set(figure(), 'WindowStyle', 'docked');
             hold on; grid;
-            plot(freq(i).data(1,1:stop), freq(i).data(2,1:stop));
-            plot(freq(i).data(1,1:stop), freq(i).data(4,1:stop));
+            xline(indexI(1)*0.002);
+            xline(indexO(jj)*0.002);
+            plot(t, pitch_m0(i,1:length(t)));
+            plot(t, V_m0(i,1:length(t)));
             hold off;
             title("PITCH EFFECT");
-            legend("OUT","f = " + f(i) + " [Hz]");
+            legend("Out" , "w = " + w(i) + " [Hz]");
         end
-    end
-
-    for i=1:length(freq)
-        stop = round(2*pi/f(i)) / 0.002;
-        t = freq(i).data(1,1:stop);
-
-        [ampO(i), indexO(i)] = max(freq(i).data(2,:));
-        [ampI(i), indexI(i)] = max(freq(i).data(4,:));
-        deltaT(i) = (indexO(i) - indexI(i)) * 0.002;
-
-        G_exp_Pitch(i) = ampO(i) / ampI(i);
-        phaseShift_Pitch(i) = deltaT(i) * f(i);
+        
 
     end
-
-    G_model_Pitch = tf([Dt], [Jp, k_pitch, Mb*Dm*g]);
+    
+    
+    G_model_Pitch(i) = tf([Dt], [Jeq 0.007 Mb*Dm*g]);
 
     set(figure(), 'WindowStyle', 'docked');
     hold on; grid;
-    margin(G_exp_Pitch, phaseShift_Pitch, f);
-    bode(G_model_Pitch);
+    margin(Magn_Pitch, phaseShift_Pitch, w);
+    bode(G_model_Pitch(i));
     title("IN: V_{Motor0}  OUT: PITCH");
     legend("G_{EXP}^{PITCH}", "G_{MODEL}^{PITCH}");
     hold off;
 
 %% YAW effect
 
-    %% TODO: calcolare picco nel primo periodo e contare phase shift con il primo picco
-    %% TODO: calcolare picco nel primo periodo per contare la fase in maniera più accurata
-    
+   for i=1:length(w) 
 
-    for i=1:length(freq) 
-
-        t = freq(i).data(1,1:end);
+        if i < 3
+            numPer = 2;
+        else
+            numPer = 5;
+        end
+        sinDur = 2*pi*numPer / w(i);
+        t = 0:0.002:sinDur;
+        
         if fig == 1
             set(figure(), 'WindowStyle', 'docked');
             hold on; grid;
-            plot(freq(i).data(1,1:end), freq(i).data(3,1:end));
-            plot(freq(i).data(1,1:end), freq(i).data(4,1:end));
+            plot(t, yaw_m0(i,1:length(t)));
+            plot(t, V_m0(i,1:length(t)));
             hold off;
             title("YAW EFFECT");
-            legend("OUT","f = " + f(i) + " [Hz]");
+            legend("Out" , "w = " + w(i) + " [Hz]");
         end
     end
 
 
 
-    for i=1:length(freq)
+    for i=1:length(w)
 
-        [ampO(i), indexO(i)] = max(abs(freq(i).data(3,:)));
-        [ampI(i), indexI(i)] = max(freq(i).data(4,:));
-        deltaT(i) = (indexO(i) - indexI(i)) * 0.002;
-
-        G_exp_Yaw(i) = ampO(i) / ampI(i);
-        phaseShift_Yaw(i) = deltaT(i) * f(i);
+        [ampO, indexO] = findpeaks(-yaw_m0(i,:));
+        [ampI, indexI] = findpeaks(V_m0(i,:));
+        
+        if isempty(ampO)
+            deltaT = - 0.9;
+            ampO = 0;
+        else
+            deltaT = (indexO(1) - indexI(1)) * 0.002;
+        end
+        G_exp_Yaw(i) = max(ampO) / max(ampI);
+        phaseShift_Yaw(i) = deltaT * w(i);
 
     end
 
@@ -164,7 +171,7 @@ clc
 
     set(figure(), 'WindowStyle', 'docked');
     hold on; grid;
-    margin(G_exp_Yaw, phaseShift_Yaw, f);
+    margin(G_exp_Yaw, phaseShift_Yaw, w);
     bode(G_model_Yaw, {0.01, 20});
     title("IN: V_{Motor0}  OUT: YAW");
     legend("G_{EXP}^{YAW}", "G_{MODEL}^{YAW}");
