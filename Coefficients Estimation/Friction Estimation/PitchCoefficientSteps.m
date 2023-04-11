@@ -48,7 +48,7 @@ function PitchCoefficientSteps(fig)
     pitch_14 = step_14.data(2,start:stop);
     pitch_12 = step_12.data(2,start:stop);
     
-    [b,a] = butter(2, 1*0.004, 'low');
+    [b,a] = butter(2, 2*0.004, 'low');
     
     pitch_18_filt = filtfilt(b, a, pitch_18);
     pitch_16_filt = filtfilt(b, a, pitch_16);
@@ -85,7 +85,7 @@ function PitchCoefficientSteps(fig)
         T_18(i) = (t18(i+1) - t18(i))*dT;
         wd_18(i) = 2*pi /(t18(i+1)-t18(i))/dT;
     end
-    sub_ratio_18 = 1/4 * log(p18(1)/p18(5));
+    sub_ratio_18 = 1/5 * log(p18(1)/p18(5));
     T_18_m = mean(T_18);
     wd_18_m = mean(wd_18);
     xi_18_m = 1 / sqrt(1 + (2*pi)^2/sub_ratio_18);
@@ -97,10 +97,10 @@ function PitchCoefficientSteps(fig)
         T_16(i) = (t16(i+1) - t16(i))*dT;
         wd_16(i) = 2*pi /(t16(i+1)-t16(i))/dT;
     end
-    sub_ratio_16 = 1/4 * log(p16(1)/p16(5));
+    sub_ratio_16 = 1/5 * log(p16(1)/p16(5));
     T_16_m = mean(T_16);
     wd_16_m = mean(wd_16);
-    xi_16_m = 1 / sqrt(1 + (2*pi/sub_ratio_16)^2);
+    xi_16_m = 1 / sqrt(1 + (2*pi)^2/sub_ratio_16);
     fnat_16 = wd_16_m / sqrt(1-xi_16_m^2);
     k_pitch_16 = 2*fnat_16*xi_16_m*(Jeq);
     
@@ -109,7 +109,7 @@ function PitchCoefficientSteps(fig)
         T_14(i) = (t14(i+1) - t14(i))*dT;
         wd_14(i) = 2*pi /(t14(i+1)-t14(i))/dT;
     end
-    sub_ratio_14 = 1/4 * log(p14(1)/p14(5));
+    sub_ratio_14 = 1/5 * log(p14(1)/p14(5));
     T_14_m = mean(T_14);
     wd_14_m = mean(wd_14);
     xi_14_m = 1 / sqrt(1 + (2*pi)^2/sub_ratio_14);
@@ -121,7 +121,7 @@ function PitchCoefficientSteps(fig)
         T_12(i) = (t12(i+1) - t12(i))*dT;
         wd_12(i) = 2*pi /(t12(i+1)-t12(i))/dT;
     end
-    sub_ratio_12 = 1/4 * log(p12(1)/p12(5));
+    sub_ratio_12 = 1/5 * log(p12(1)/p12(5));
     T_12_m = mean(T_12);
     wd_12_m = mean(wd_12);
     xi_12_m = 1 / sqrt(1 + (2*pi)^2/sub_ratio_12);

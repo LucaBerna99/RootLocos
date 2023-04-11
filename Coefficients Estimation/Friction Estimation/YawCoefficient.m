@@ -1,37 +1,49 @@
 
 function YawCoefficient(fig)
     
+    %% COMMENTI
+    %Valutare con FVT la velocità raggiunta dal sistema del primo ordine 
+    % omega_out = [ (Jy/k_yaw) / ((Jy/k_yaw)s + 1) ] 
+
+    
     %% GLOBAL 
     global k_yaw w_ramp_1P
 
     %% LOAD
     load("parameters.mat");
-    pitch_yaw = load("RampM1_NoPitch.mat");
+    yaw = load("PitchLocked_StepM1_1.mat");
     
     %% ACQUISITION
-    start = 1;
-    t = pitch_yaw.data(1,start:end) - start*0.002;
-    yawdata = pitch_yaw.data(3,start:end);
-    Vmotor1 = pitch_yaw.data(5,start:end);
+    start = 1002;
+    t = yaw.data(1,start:end) - start*0.002;
+    yawdata = (yaw.data(3,start:end) - yaw.data(3,1))*Pitch_encoder_res;
+    Vmotor1 = yaw.data(5,start:end);
     
     %% SMOOTH SPLINE and DERIVATIVEs
 
-    theta_yaw_par = csaps(t,yawdata,0.0001);
-    theta_yaw = ppval(theta_yaw_par,t);    
+    phi_par = csaps(t,yawdata,0.7);
+    phi = ppval(phi_par,t);  
+
+    phi_d_par = fnder(phi_par,1);
+    phi_d = ppval(phi_d_par,t);
     
-    theta_d_yaw_par = fnder(theta_yaw_par,1);
-    theta_d_yaw = ppval(theta_d_yaw_par,t);
-    
-    theta_dd_yaw_par = fnder(theta_d_yaw_par,1);
-    theta_dd_yaw = ppval(theta_dd_yaw_par,t);
+    for i = 1:length(phi)
+        error(i) = yawdata(i) - phi(i); 
+    end
     
     if fig == 1
         set(figure, "WindowStyle", "docked");
         grid;hold on;
         plot(yawdata, "Linewidth", 1.5);
-        plot(theta_yaw);
+        plot(phi);
+        plot(Vmotor1);
         hold off;
         legend("\theta^{MEASURED}", "\theta^{FITTED}");
+
+        set(figure, "WindowStyle", "docked");
+        grid;
+        plot(error, "Linewidth", 1.5);
+        title("Fitting error");
     end
     
     %% PLOTs
@@ -39,35 +51,25 @@ function YawCoefficient(fig)
         
         set(figure, "WindowStyle", "docked");
         grid;hold on;
-        plot(t, theta_d_yaw, 'g');
-        plot(t, theta_dd_yaw, 'r');
+        plot(t, phi_d, 'g');
         legend("\theta_d","\theta_{dd}");
         hold off;
         
     end
     
-    
-    
-    %% Dynamics calculation
-    
-        
-    for i = 1:length(theta_yaw)
-        
-        F1(i) = w_ramp_1P(1)*Vmotor1(i)^3 + w_ramp_1P(2)*Vmotor1(i)^2 + w_ramp_1P(3)*Vmotor1(i);
-        k_yaw_vec(i) = (F1(i)*Dt - Jy*theta_dd_yaw(i));
-    
+    %% Assestment time
+    check = 0;
+    for i=1:length(phi_d)
+        if check == 0 && phi_d(i) >= 0.995*phi_d(end)
+            ind = i;
+            check = 1;
+            phi_d(i);
+        end
     end
-
-    k_yaw = abs(mean(k_yaw_vec));
+        
+    tau = t(ind)/5;
     
-    
-    if fig == 1
-        set(figure, "WindowStyle", "docked");
-        grid;hold on;
-        plot(k_yaw_vec,':','LineWidth',2);
-        title("K_{yaw}");
-        hold off;
-    end
+    k_yaw = 2*Jy / tau;
 
-    clc
+    %clc
 end
