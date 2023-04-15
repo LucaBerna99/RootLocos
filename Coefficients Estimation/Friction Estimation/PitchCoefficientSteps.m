@@ -61,6 +61,39 @@ function PitchCoefficientSteps(fig)
     [p14, t14] = findpeaks(pitch_14_filt);
     [p12, t12] = findpeaks(pitch_12_filt);
     
+        if fig == 1
+        
+        set(figure(), "windowStyle", "docked");
+        hold on;grid;
+        plot(step_18.data(2,start:end))
+        plot(pitch_18_filt)
+        hold off;
+        title("Step 18V");
+        
+        set(figure(), "windowStyle", "docked");
+        hold on;grid;
+        plot(step_16.data(2,start:end))
+        plot(pitch_16_filt)
+        hold off;
+        title("Step 16V");
+        
+        set(figure(), "windowStyle", "docked");
+        hold on;grid;
+        plot(step_14.data(2,start:end))
+        plot(pitch_14_filt)
+        hold off;
+        title("Step 14V");
+        
+        set(figure(), "windowStyle", "docked");
+        hold on;grid;
+        plot(step_12.data(2,start:end))
+        plot(pitch_12_filt)
+        hold off;
+        title("Step 12V");
+    
+    end
+    
+    
     if fig == 1
         set(figure(), "windowStyle", "docked");
         findpeaks(pitch_18_filt)
@@ -88,7 +121,7 @@ function PitchCoefficientSteps(fig)
     sub_ratio_18 = 1/5 * log(p18(1)/p18(5));
     T_18_m = mean(T_18);
     wd_18_m = mean(wd_18);
-    xi_18_m = 1 / sqrt(1 + (2*pi)^2/sub_ratio_18);
+    xi_18_m = 1 / sqrt(1 + (2*pi/sub_ratio_18)^2);
     fnat_18 = wd_18_m / sqrt(1-xi_18_m^2);
     k_pitch_18 = 2*fnat_18*xi_18_m*(Jeq);
     
@@ -100,7 +133,7 @@ function PitchCoefficientSteps(fig)
     sub_ratio_16 = 1/5 * log(p16(1)/p16(5));
     T_16_m = mean(T_16);
     wd_16_m = mean(wd_16);
-    xi_16_m = 1 / sqrt(1 + (2*pi)^2/sub_ratio_16);
+    xi_16_m = 1 / sqrt(1 + (2*pi/sub_ratio_16)^2);
     fnat_16 = wd_16_m / sqrt(1-xi_16_m^2);
     k_pitch_16 = 2*fnat_16*xi_16_m*(Jeq);
     
@@ -112,7 +145,7 @@ function PitchCoefficientSteps(fig)
     sub_ratio_14 = 1/5 * log(p14(1)/p14(5));
     T_14_m = mean(T_14);
     wd_14_m = mean(wd_14);
-    xi_14_m = 1 / sqrt(1 + (2*pi)^2/sub_ratio_14);
+    xi_14_m = 1 / sqrt(1 + (2*pi/sub_ratio_14)^2);
     fnat_14 = wd_14_m / sqrt(1-xi_14_m^2);
     k_pitch_14 = 2*fnat_14*xi_14_m*(Jeq);
     
@@ -124,7 +157,7 @@ function PitchCoefficientSteps(fig)
     sub_ratio_12 = 1/5 * log(p12(1)/p12(5));
     T_12_m = mean(T_12);
     wd_12_m = mean(wd_12);
-    xi_12_m = 1 / sqrt(1 + (2*pi)^2/sub_ratio_12);
+    xi_12_m = 1 / sqrt(1 + (2*pi/sub_ratio_12)^2);
     fnat_12 = wd_12_m / sqrt(1-xi_12_m^2);
     k_pitch_12 = 2*fnat_12*xi_12_m*(Jeq);
     

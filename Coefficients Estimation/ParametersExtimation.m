@@ -7,7 +7,6 @@ clear all
 %global freq_nat
 global k_pitch k_yaw k_pitch_
 global k_py k_yp
-global F_limit_yaw F_limit_pitch
 global w_ramp_0P w_ramp_0N w_ramp_1P w_ramp_1N
 
 % data for inverse aerodynamic map look-up table
@@ -32,7 +31,7 @@ end
 %% -----------------------k_yaw-----------------------
     YawCoefficient(fig);            %done
 
-%% ----------k_py---k_yp---F_limit_yaw---F_limit_pitch--------------
+%% --------------------k_py---k_yp------------------------
     mutualEffectRampsLocked(fig)    %done
    
 %% -----------------------SAVE-----------------------

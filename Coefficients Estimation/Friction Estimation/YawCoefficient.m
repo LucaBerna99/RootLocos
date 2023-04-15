@@ -7,69 +7,61 @@ function YawCoefficient(fig)
 
     
     %% GLOBAL 
-    global k_yaw w_ramp_1P
+    global k_yaw
 
     %% LOAD
     load("parameters.mat");
-    yaw = load("PitchLocked_StepM1_1.mat");
+    load("M0steps_MutualYaw_06-Mar-2023_16-49-17_.mat");
+        
+    start = 1;
+    t = data(1,:) - start*0.002;
+    pitch = data(2,:);
+    yaw = data(3,:);
+    V_m0 = data(4,:);
     
-    %% ACQUISITION
-    start = 1002;
-    t = yaw.data(1,start:end) - start*0.002;
-    yawdata = (yaw.data(3,start:end) - yaw.data(3,1))*Pitch_encoder_res;
-    Vmotor1 = yaw.data(5,start:end);
+    %% filter
     
-    %% SMOOTH SPLINE and DERIVATIVEs
-
-    phi_par = csaps(t,yawdata,0.7);
-    phi = ppval(phi_par,t);  
-
-    phi_d_par = fnder(phi_par,1);
-    phi_d = ppval(phi_d_par,t);
+    [b,a] = butter(1, 2*0.004, 'low');
+    yaw = filtfilt(b, a, yaw);
+    yaw_d = diff(yaw)/0.002;
+    yaw(end) = [];
+    t(end) = [];
+    V_m0(end) = [];
     
-    for i = 1:length(phi)
-        error(i) = yawdata(i) - phi(i); 
+    
+    %%
+    if fig == 1
+       set(figure(), "windowStyle", "docked");
+       grid; hold on;
+       plot(t, yaw);
+       plot(t, yaw_d);
+       hold off;
+       title("Yaw and Yaw_d");
     end
     
     if fig == 1
-        set(figure, "WindowStyle", "docked");
-        grid;hold on;
-        plot(yawdata, "Linewidth", 1.5);
-        plot(phi);
-        plot(Vmotor1);
-        hold off;
-        legend("\theta^{MEASURED}", "\theta^{FITTED}");
-
-        set(figure, "WindowStyle", "docked");
-        grid;
-        plot(error, "Linewidth", 1.5);
-        title("Fitting error");
+       set(figure(), "windowStyle", "docked");
+       grid; hold on;
+       plot(t(270/0.002:end)-270, yaw_d(270/0.002:end));
+       hold off;
     end
     
-    %% PLOTs
-    if fig == 1
-        
-        set(figure, "WindowStyle", "docked");
-        grid;hold on;
-        plot(t, phi_d, 'g');
-        legend("\theta_d","\theta_{dd}");
-        hold off;
-        
-    end
+    %%
+    s = 270/0.002;
+    w0 = abs(yaw_d(s));
+    w1 = 0.005*w0;
     
-    %% Assestment time
-    check = 0;
-    for i=1:length(phi_d)
-        if check == 0 && phi_d(i) >= 0.995*phi_d(end)
-            ind = i;
-            check = 1;
-            phi_d(i);
+    t0 = 270;
+    flg = 0;
+    
+    for i = s:length(t)
+        if abs(yaw_d(i)) <= w1 && flg == 0
+            flg = 1;
+            t1 = i * 0.002;
         end
     end
-        
-    tau = t(ind)/5;
     
-    k_yaw = 2*Jy / tau;
-
-    %clc
+    tau = (t1-t0)/5;
+    k_yaw = Jy / tau /2;
+    
 end
